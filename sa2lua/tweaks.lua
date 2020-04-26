@@ -140,6 +140,30 @@ function AlwaysARankBtnChange(sender)
 	end
 end
 
+function AlwaysOneRingBtnChange(sender)
+	if checkbox_getState(sender) == cbChecked then
+        oneRingTimer=createTimer()
+        oneRingTimer.Interval=100
+        oneRingTimer.OnTimer = OneRingTimerTick
+        oneRingTimer.Enabled = true
+	else
+        KillOneRingTimer()
+	end
+end
+
+function KillOneRingTimer()
+  if oneRingTimer then
+    oneRingTimer.Destroy()
+    oneRingTimer = nil
+  end
+end
+
+function OneRingTimerTick(timer)
+    if readSmallInteger(0x0174b028) < 1 then
+        writeSmallInteger(0x174b028, 1)
+    end
+end
+
 function PreventValueChangeBtnChange(sender)
 	if checkbox_getState(sender) == cbChecked then
 		writeBytes(0x464DD8, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90) --ground accel
